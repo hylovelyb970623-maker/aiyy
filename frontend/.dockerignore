@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+.env*
+.git/
+.gitignore
+*.md
+.vscode/
+.idea/

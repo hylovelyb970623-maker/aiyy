@@ -1,0 +1,32 @@
+[project]
+name = "aiyy-backend"
+version = "0.1.0"
+description = "AIYY - ComfyUI Workflow to AI Application Platform Backend"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.34",
+    "sqlalchemy[asyncio]>=2.0",
+    "aiosqlite>=0.20",
+    "alembic>=1.14",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "python-jose[cryptography]>=3.3",
+    "bcrypt>=4.0",
+    "python-multipart>=0.0.18",
+    "httpx>=0.28",
+    "websockets>=14.0",
+    "sse-starlette>=2.0",
+    "pillow>=11.0",
+    "aiofiles>=24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "httpx>=0.28",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]

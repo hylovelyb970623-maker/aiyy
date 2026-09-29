@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# build
+.next/
+*.egg-info/
+dist/
+build/
+
+# env & data
+.env
+.env.local
+*.db
+*.db-journal
+*.sqlite3
+
+# user storage & uploads
+backend/storage/uploads/*
+backend/storage/results/*
+!backend/storage/uploads/.gitkeep
+!backend/storage/results/.gitkeep
+
+# editor
+.vscode/
+.idea/
+.trae/
+.zcode/
+.DS_Store
+
+# logs
+*.log

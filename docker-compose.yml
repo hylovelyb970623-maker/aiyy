@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${PORT:-80}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./data/aiyy.db
+      - DATABASE_URL_SYNC=sqlite:///./data/aiyy.db
+      - COMFYUI_URL=${COMFYUI_URL:-http://host.docker.internal:8188}
+      - COMFYUI_WS_URL=${COMFYUI_WS_URL:-ws://host.docker.internal:8188}
+      - JWT_SECRET=${JWT_SECRET:-aiyy-prod-secret-key-please-change}
+      - STORAGE_PATH=/app/storage
+      - RESULT_IMAGE_BASE_URL=${RESULT_IMAGE_BASE_URL:-}
+      - CORS_ORIGINS=["http://localhost","http://localhost:${PORT:-80}"]
+      - DEFAULT_CREDITS_ON_SIGNUP=${DEFAULT_CREDITS_ON_SIGNUP:-100}
+      - DEFAULT_CREDITS_PER_RUN=${DEFAULT_CREDITS_PER_RUN:-1}
+      - ADMIN_ACCOUNT=${ADMIN_ACCOUNT:-admin@example.com}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+    volumes:
+      - backend-data:/app/data
+      - backend-storage:/app/storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-}
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend-data:
+  backend-storage:
